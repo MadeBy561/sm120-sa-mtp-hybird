@@ -1,0 +1,19 @@
+# Example: enable the SA+MTP hybrid on a b12x vLLM image you built as `vllm-sa-mtp`.
+#   docker compose -f docker-compose.example.yml up -d
+#
+# Shows ONLY the SA-specific bits — keep your normal model mount, ports, GPUs, TP/DCP, util, etc.
+services:
+  vllm:
+    image: vllm-sa-mtp
+    # --- your normal serving config goes here (ports, /model mount, --gpus, etc.) ---
+    environment:
+      # ===== enable the hybrid (OMIT this line => stock MTP; clean A/B, SA code not loaded) =====
+      SA_MTP: "1"
+
+      # ===== knobs =====
+      SA_SPEC_THRESH: "4"      # min context-match length before SA copies. lower => fires more. "inf" => SA muted.
+      MTP_DRAFT_DEPTH: "5"     # cap MTP draft forwards/step (MTP accept dies past ~5; SA covers the long tail)
+
+      # The speculative config must use method "mtp" with a WIDE num_speculative_tokens (the SA copy
+      # width) and greedy drafting; serve at temperature 0 for a lossless copy overlay. Example (b12x):
+      # SPEC_CONFIG: '{"model":"/model","method":"mtp","num_speculative_tokens":16,"moe_backend":"b12x","draft_sample_method":"greedy"}'

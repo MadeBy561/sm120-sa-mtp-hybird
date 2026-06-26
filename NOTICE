@@ -1,0 +1,18 @@
+SA + MTP Hybrid Speculator
+Ported by MadeBy561 — https://github.com/MadeBy561
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+This project ports and builds on:
+
+  - sa_spec — Baseten's suffix-automaton speculation engine (Apache-2.0)
+    https://github.com/basetenlabs/sa_spec
+    The suffix-automaton engine and its threshold-switch design are Baseten's;
+    this project wires it into vLLM / b12x's V2 MTP speculator.
+
+  - vLLM / b12x (Apache-2.0)
+    https://github.com/vllm-project/vllm  •  https://github.com/lukealonso/b12x
+
+Method background:
+  - Baseten, "Open-sourcing Baseten's suffix automaton MTP accelerator" (2026)
+    https://www.baseten.co/blog/boosting-mtp-acceptance-rates-in-baseten-speculation-engine/
+  - SAM Decoding: Speculative Decoding via Suffix Automaton (arXiv:2411.10666)
